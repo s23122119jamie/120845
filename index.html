@@ -504,7 +504,7 @@
                 <!-- 預設預設個人大頭貼 (可替換為個人相片) -->
                 <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=400&auto=format&fit=crop" alt="Profile Avatar" class="avatar-img">
                 <div class="level-badge">
-                    <i class="fa-solid fa-bolt"></i> LV. 2
+                    <i class="fa-solid fa-bolt"></i> LV. 3
                 </div>
             </div>
             
@@ -516,7 +516,7 @@
                     <i class="fa-solid fa-code"></i> HTML5 / CSS3
                 </div>
                 <div class="stat-item">
-                    <i class="fa-solid fa-trophy"></i> 進度: 2 / 16
+                    <i class="fa-solid fa-trophy"></i> 進度: 3 / 16
                 </div>
                 <div class="stat-item">
                     <i class="fa-solid fa-fire"></i> 狀態: 闖關中
@@ -531,7 +531,7 @@
                     <i class="fa-solid fa-map-location-dot"></i> 課程任務地圖 (Quest Map)
                 </div>
                 <div class="grid-progress">
-                    解鎖率 12.5%
+                    解鎖率 18.75%
                 </div>
             </div>
 
@@ -549,20 +549,20 @@
                     </div>
                 </a>
 
-                <!-- 按鈕 2： Week 2 (已解鎖 ) -->
+                <!-- 按鈕 2： Week 2 (已解鎖 - 完成) -->
                 <a href="w2/index.html" class="quest-card unlocked" style="animation-delay: 0.1s;">
                     <div class="card-top">
                         <span class="week-number">WEEK 02</span>
-                        <span class="status-tag active"><i class="fa-solid fa-star"></i> Active</span>
+                        <span class="status-tag completed"><i class="fa-solid fa-check"></i> Done</span>
                     </div>
                     <div class="card-title">Week 2 - 今天吃甚麼?</div>
                     <div class="card-footer">
                         <span>開啟作品</span> <i class="fa-solid fa-arrow-right" style="margin-left: 6px;"></i>
                     </div>
                 </a>
-                
-                <!-- 按鈕 3： Week 3 (已解鎖 ) -->
-                <a href="w3/index.html" class="quest-card unlocked" style="animation-delay: 0.1s;">
+
+                <!-- 按鈕 3： Week 3 (已解鎖 - 進行中) -->
+                <a href="w3/index.html" class="quest-card unlocked" style="animation-delay: 0.15s;">
                     <div class="card-top">
                         <span class="week-number">WEEK 03</span>
                         <span class="status-tag active"><i class="fa-solid fa-star"></i> Active</span>
@@ -571,6 +571,17 @@
                     <div class="card-footer">
                         <span>開啟作品</span> <i class="fa-solid fa-arrow-right" style="margin-left: 6px;"></i>
                     </div>
+                </a>
+
+                <!-- 按鈕 4 - 16： 未解鎖 (Locked State) -->
+                <!-- Week 4 -->
+                <a href="javascript:void(0)" class="quest-card locked" onclick="showLockedToast('Week 4 任務')" style="animation-delay: 0.2s;">
+                    <div class="card-top">
+                        <span class="week-number">WEEK 04</span>
+                        <span class="locked-icon">🔒</span>
+                    </div>
+                    <div class="card-title">Week 4 - 尚未解鎖</div>
+                    <div class="locked-hint"><i class="fa-solid fa-lock"></i> 預計下週開放</div>
                 </a>
 
                 <!-- Week 4 -->
@@ -728,3 +739,13 @@
             
             message.textContent = `🔒 ${weekName} 尚未解鎖！完成前期任務後開啟。`;
             toast.classList.add('show');
+
+            if (toastTimer) clearTimeout(toastTimer);
+
+            toastTimer = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2500);
+        }
+    </script>
+</body>
+</html>
