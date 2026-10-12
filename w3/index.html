@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CYBER_MEME // 賽博龐克迷因產生器</title>
+
+    <!-- 引入 Google Fonts 科幻風格字體 (Orbitron, Noto Sans TC) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@700;900&family=Orbitron:wght@700;900&family=Russo+One&display=swap" rel="stylesheet">
+    
+    <!-- 引入 Tailwind CSS CDN 加速排版 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- 引入 html2canvas 截圖下載程式庫 (CDN) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <style>
+        /* 賽博龐克核心配色與字型設定 */
+        :root {
+            --neon-cyan: #00f0ff;
+            --neon-pink: #ff007f;
+            --neon-yellow: #ffe600;
+            --cyber-dark: #0a0a12;
+            --cyber-card: #121324;
+        }
+
+        body {
+            background-color: var(--cyber-dark);
+            color: #e2e8f0;
+            font-family: 'Orbitron', 'Noto Sans TC', sans-serif;
+            background-image: 
+                linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+
+        /* 霓虹邊框與發光效果 */
+        .cyber-border-cyan {
+            border: 2px solid var(--neon-cyan);
+            box-shadow: 0 0 12px rgba(0, 240, 255, 0.4), inset 0 0 12px rgba(0, 240, 255, 0.2);
+        }
+
+        .cyber-border-pink {
+            border: 2px solid var(--neon-pink);
+            box-shadow: 0 0 12px rgba(255, 0, 127, 0.4), inset 0 0 12px rgba(255, 0, 127, 0.2);
+        }
+
+        .cyber-text-glow {
+            text-shadow: 0 0 8px rgba(0, 240, 255, 0.8), 0 0 18px rgba(0, 240, 255, 0.4);
+        }
+
+        .cyber-pink-glow {
+            text-shadow: 0 0 8px rgba(255, 0, 127, 0.8), 0 0 18px rgba(255, 0, 127, 0.4);
+        }
+
+        /* 酷炫切角按鈕風格 (Cyberpunk Button Cut) */
+        .cyber-btn {
+            clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
+            transition: all 0.2s ease-in-out;
+        }
+
+        .cyber-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.7);
+        }
+
+        .cyber-btn:active {
+            transform: translateY(1px);
+        }
+
+        /* 迷因文字樣式：經典迷因厚重黑邊 (Text Shadow Stroke) */
+        .meme-text-style {
+            font-family: 'Impact', 'Russo One', 'Noto Sans TC', sans-serif;
+            text-transform: uppercase;
+            color: #ffffff;
+            text-shadow: 
+                -3px -3px 0 #000,  
+                 3px -3px 0 #000,
+                -3px  3px 0 #000,
+                 3px  3px 0 #000,
+                 0px  4px 8px rgba(0,0,0,0.9);
+            line-height: 1.1;
+            word-break: break-word;
+            user-select: none;
+        }
+
+        /* 自訂 Range 滑桿樣式 */
+        input[type="range"] {
+            -webkit-appearance: none;
+            background: #1e2038;
+            border: 1px solid var(--neon-cyan);
+            height: 8px;
+            border-radius: 4px;
+            outline: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            background: var(--neon-pink);
+            border-radius: 2px;
+            cursor: pointer;
+            box-shadow: 0 0 10px var(--neon-pink);
+        }
+
+        /* 模擬掃描線特效 Overlay */
+        .scanlines {
+            position: relative;
+            overflow: hidden;
+        }
+        .scanlines::before {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+            background-size: 100% 4px;
+            z-index: 10;
+            pointer-events: none;
+            opacity: 0.6;
+        }
+    </style>
+</head>
+<body class="min-h-screen p-4 md:p-8 flex flex-col justify-between">
+
+    <header class="max-w-7xl mx-auto w-full mb-6 text-center md:text-left flex flex-col md:flex-row justify-between items-center border-b border-cyan-500/30 pb-4">
+        <div>
+            <h1 class="text-3xl md:text-5xl font-black tracking-wider text-cyan-400 cyber-text-glow">
+                CYBER<span class="text-pink-500 cyber-pink-glow">//</span>MEME
+            </h1>
+            <p class="text-xs md:text-sm text-cyan-300/70 tracking-widest mt-1">
+                SYSTEM.V2.0 // 自定義賽博龐克迷因產生器
+            </p>
+        </div>
+        <div class="mt-4 md:mt-0 flex items-center gap-2 text-xs font-mono bg-cyan-950/40 px-3 py-1.5 rounded border border-cyan-500/40 text-cyan-300">
+            <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+            STATUS: ONLINE
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-start my-auto">
+        
+        <!-- ==================== 左側：控制面板區 (Control Panel) ==================== -->
+        <section class="lg:col-span-5 bg-slate-900/80 backdrop-blur-md p-6 rounded-lg cyber-border-cyan flex flex-col gap-5">
+            <h2 class="text-xl font-bold text-cyan-400 border-b border-cyan-500/30 pb-2 flex items-center justify-between">
+                <span>🎛️ 控制面板</span>
+                <span class="text-xs text-pink-400 font-mono">[INPUT_MODULE]</span>
+            </h2>
+
+            <!-- 1. 圖片上傳區塊 -->
+            <div class="flex flex-col gap-2">
+                <label class="text-xs text-cyan-300 font-bold tracking-wider">01. 選擇/上傳底圖 (LOCAL IMAGE)</label>
+                <!-- 隱藏原生檔案選擇器，改用酷炫按鈕觸發 -->
+                <input type="file" id="imageInput" accept="image/*" class="hidden">
+                <button type="button" onclick="document.getElementById('imageInput').click()" 
+                        class="cyber-btn bg-cyan-500 hover:bg-cyan-400 text-black font-black py-3 px-4 w-full flex items-center justify-center gap-2 cursor-pointer shadow-lg">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                    上傳本機圖片 (UPLOAD IMAGE)
+                </button>
+                
+                <!-- 預設模板快速選擇 -->
+                <div class="flex items-center gap-2 mt-2">
+                    <span class="text-xs text-slate-400">快速套用預設圖:</span>
+                    <button type="button" onclick="loadPresetImage('cyberpunk')" class="text-xs bg-slate-800 hover:bg-slate-700 text-cyan-300 px-2 py-1 rounded border border-cyan-500/30">賽博風格</button>
+                    <button type="button" onclick="loadPresetImage('doge')" class="text-xs bg-slate-800 hover:bg-slate-700 text-pink-300 px-2 py-1 rounded border border-pink-500/30">經典狗狗</button>
+                </div>
+            </div>
+
+            <!-- 2. 上方與下方文字輸入框 -->
+            <div class="flex flex-col gap-4">
+                <div>
+                    <label for="topTextInput" class="text-xs text-cyan-300 font-bold tracking-wider block mb-1">02. 上方文字 (TOP TEXT)</label>
+                    <input type="text" id="topTextInput" value="當你寫的程式" 
+                           placeholder="輸入上方文字..." 
+                           class="w-full bg-slate-950 border border-cyan-500/50 rounded px-3 py-2 text-white focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition">
+                </div>
+
+                <div>
+                    <label for="bottomTextInput" class="text-xs text-cyan-300 font-bold tracking-wider block mb-1">03. 下方文字 (BOTTOM TEXT)</label>
+                    <input type="text" id="bottomTextInput" value="一次就編譯成功" 
+                           placeholder="輸入下方文字..." 
+                           class="w-full bg-slate-950 border border-cyan-500/50 rounded px-3 py-2 text-white focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition">
+                </div>
+            </div>
+
+            <!-- 3. 微調滑桿 (字型大小、垂直位置) -->
+            <div class="flex flex-col gap-4 bg-slate-950/60 p-4 rounded border border-slate-800">
+                <label class="text-xs text-pink-400 font-bold tracking-wider">04. 參數調校 (SLIDERS)</label>
+                
+                <!-- 字體大小控制 -->
+                <div>
+                    <div class="flex justify-between text-xs text-slate-300 mb-1">
+                        <span>字體大小 (Font Size)</span>
+                        <span id="fontSizeValue" class="text-cyan-400 font-mono">36px</span>
+                    </div>
+                    <input type="range" id="fontSizeSlider" min="16" max="72" value="36" class="w-full">
+                </div>
+
+                <!-- 上方文字垂直位置 -->
+                <div>
+                    <div class="flex justify-between text-xs text-slate-300 mb-1">
+                        <span>上方文字位置 (Top Position)</span>
+                        <span id="topPosValue" class="text-cyan-400 font-mono">5%</span>
+                    </div>
+                    <input type="range" id="topPosSlider" min="0" max="80" value="5" class="w-full">
+                </div>
+
+                <!-- 下方文字垂直位置 -->
+                <div>
+                    <div class="flex justify-between text-xs text-slate-300 mb-1">
+                        <span>下方文字位置 (Bottom Position)</span>
+                        <span id="bottomPosValue" class="text-cyan-400 font-mono">5%</span>
+                    </div>
+                    <input type="range" id="bottomPosSlider" min="0" max="80" value="5" class="w-full">
+                </div>
+            </div>
+
+            <!-- 4. 一鍵下載圖檔按鈕 -->
+            <button type="button" id="downloadBtn" 
+                    class="cyber-btn bg-pink-600 hover:bg-pink-500 text-white font-black py-3.5 px-4 w-full flex items-center justify-center gap-2 cursor-pointer mt-2 text-lg tracking-wider shadow-lg">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                下載迷因 (DOWNLOAD MEME)
+            </button>
+        </section>
+
+        <!-- ==================== 右側：迷因即時預覽區 (Meme Preview Canvas) ==================== -->
+        <section class="lg:col-span-7 flex flex-col items-center justify-center">
+            <div class="w-full mb-2 flex justify-between items-center px-1">
+                <span class="text-xs text-pink-400 font-mono flex items-center gap-1">
+                    <span class="w-2 h-2 rounded-full bg-pink-500 animate-ping"></span> LIVE PREVIEW
+                </span>
+                <span class="text-xs text-slate-400 font-mono">CANVAS_RENDER_BOX</span>
+            </div>
+
+            <!-- 外框與截圖區域：html2canvas 會將這個 div 轉為圖片 -->
+            <div class="w-full flex justify-center items-center bg-slate-950 p-2 md:p-4 rounded-lg cyber-border-pink">
+                
+                <!-- memeContainer: 將圖片與重疊文字包裹在一起的核心容器 -->
+                <div id="memeContainer" class="relative overflow-hidden inline-block max-w-full rounded bg-slate-900 scanlines">
+                    
+                    <!-- 底圖 -->
