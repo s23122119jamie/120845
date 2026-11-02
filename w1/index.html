@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>我的個人數位名片</title>
+  <!-- 引入外部 CSS 檔案 -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- 置中名片主體卡片 -->
+  <div class="card">
+    
+    <!-- 1. 圓形大頭貼照片 -->
+    <div class="avatar-wrapper">
+      <!-- 👇【新手修改處】請將 src 改為您的照片網址或檔名 (例如 photo.jpg) -->
+      <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80" alt="個人大頭貼" class="avatar">
+    </div>
+
+    <!-- 2. 名字與簡短自我介紹 -->
+    <!-- 👇【新手修改處】請改為您的名字 -->
+    <h1 class="name">黃湘育 JAMIE</h1>
+    <!-- 👇【新手修改處】請改為您的一行簡短自我介紹 -->
+    <p class="bio">熱愛探索生活 🌊</p>
+
+    <!-- 3. 下方兩個按鈕 (Instagram 和 Mail) -->
+    <div class="button-group">
+      <!-- 👇【新手修改處】請將 href 改為您的 Instagram 帳號網址 -->
+      <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="btn btn-instagram">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+        <span>Instagram</span>
+      </a>
+
+      <!-- 👇【新手修改處】請將 mailto: 後面改為您的 Email 地址 -->
+      <a href="mailto:your.email@example.com" class="btn btn-mail">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        <span>寄信給我</span>
+      </a>
+    </div>
+
+  </div>
+
+</body>
+</html>
